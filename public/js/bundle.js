@@ -89,6 +89,7 @@ class TableView {
 
     initDomReferences() {
         this.headerRowEl = document.querySelector('THEAD TR');
+        this.sheetBodyEl = document.querySelector('TBODY');
     }
 
     renderTable() {
@@ -105,7 +106,7 @@ class TableView {
 
     renderTableBody() {
         const fragment = document.createDocumentFragment();
-        for (let row = 0; row = this.model.numRows; row++) {
+        for (let row = 0; row < this.model.numRows; row++) {
             const tr = createTR();
             for (let col = 0; col < this.model.numCols; col++) {
                 const position = {col: col, row: row};
