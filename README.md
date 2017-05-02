@@ -2,7 +2,8 @@
 
 Welcome to the X-Cell app!
 
-This is a microscopic "spreadsheet" app that will knock your socks off, if you have very, very small socks.
+This is a microscopic "spreadsheet" app that will knock your socks off, if you have very, very small socks.  
+It is able to calculate the sum of the values in each column (given they are numbers, obviously) 
 
 ## Feature spec
 
