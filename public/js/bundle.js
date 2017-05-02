@@ -7,7 +7,7 @@ const tableView = new TableView(model);
 tableView.init();
 
 
-},{"./table-model":4,"./table-view":5}],2:[function(require,module,exports){
+},{"./table-model":5,"./table-view":6}],2:[function(require,module,exports){
 const getRange = function(fromNum, toNum) {
     return Array.from({ length: toNum - fromNum + 1}, 
         (unused, i) => i + fromNum);
@@ -52,6 +52,14 @@ module.exports = {
     removeChildren: removeChildren
 };
 },{}],4:[function(require,module,exports){
+const getSumFromArray = function(...numArray) {
+    return numArray.reduce((a, b) => a + b, 0);
+};
+
+module.exports = {
+    getSumFromArray: getSumFromArray
+};
+},{}],5:[function(require,module,exports){
 class TableModel {
     constructor(numCols=10, numRows=20) {
         this.numCols = numCols;
@@ -73,9 +81,10 @@ class TableModel {
 }
 
 module.exports = TableModel;
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 const { getLetterRange } = require('./array-util');
 const { removeChildren, createTH, createTR, createTD } = require('./dom-util');
+const { getSumFromArray } = require('./sum-util');
 
 class TableView {
     constructor(model) {
@@ -92,6 +101,7 @@ class TableView {
     initDomReferences() {
         this.headerRowEl = document.querySelector('THEAD TR');
         this.sheetBodyEl = document.querySelector('TBODY');
+        this.sheetFootEl = document.querySelector('TFOOT TR');
         this.formulaBarEl = document.querySelector('#formula-bar');
     }
 
@@ -110,9 +120,15 @@ class TableView {
         this.formulaBarEl.focus();
     }
 
+    isCurrentCell(col, row) {
+        return this.currentCellLocation.col === col &&
+               this.currentCellLocation.row === row;
+    }
+
     renderTable() {
         this.renderTableHeader();
         this.renderTableBody();
+        this.renderTableFoot();
     }
 
     renderTableHeader() {
@@ -120,11 +136,6 @@ class TableView {
         getLetterRange('A', this.model.numCols)
             .map(colLabel => createTH(colLabel))
             .forEach(th => this.headerRowEl.appendChild(th));
-    }
-
-    isCurrentCell(col, row) {
-        return this.currentCellLocation.col === col &&
-               this.currentCellLocation.row === row;
     }
 
     renderTableBody() {
@@ -148,6 +159,18 @@ class TableView {
         this.sheetBodyEl.appendChild(fragment);
     }
 
+    renderTableFoot() {
+        const fragment = document.createDocumentFragment();
+        for (let col = 0; col < this.model.numCols; col++) {
+            const position = {col: col, row: 0};
+            const value = this.handleColSum(col);
+            const td = createTD(value);
+            fragment.appendChild(td);
+        }
+        removeChildren(this.sheetFootEl);
+        this.sheetFootEl.appendChild(fragment);
+    }
+
     attachEventHandlers() {
         this.sheetBodyEl.addEventListener('click', this.handleSheetClick.bind(this));
         this.formulaBarEl.addEventListener('keyup', this.handleFormulaBarChange.bind(this));
@@ -157,6 +180,19 @@ class TableView {
         const value = this.formulaBarEl.value;
         this.model.setValue(this.currentCellLocation, value);
         this.renderTableBody();
+        this.renderTableFoot();
+    }
+
+    handleColSum(col) {
+        const valueArray = [];
+        for (let row = 0; row < this.model.numRows; row++) {
+            const position = { col: col, row: row };
+            const value = Number(this.model.getValue(position), 10);
+            if (value) {
+                valueArray.push(value);
+            }
+        }
+        return getSumFromArray(...valueArray);
     }
 
     handleSheetClick(evt) {
@@ -168,7 +204,9 @@ class TableView {
         this.renderTableBody();
         this.renderFormulaBar();
     }
+
+
 }
 
 module.exports = TableView;
-},{"./array-util":2,"./dom-util":3}]},{},[1]);
+},{"./array-util":2,"./dom-util":3,"./sum-util":4}]},{},[1]);

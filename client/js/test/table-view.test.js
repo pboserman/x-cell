@@ -10,6 +10,36 @@ describe('table-view', () => {
         document.documentElement.innerHTML = html;
     });
 
+    describe('sum row', () => { 
+        it('renders the sum of a column when the value of the cells change', () => {
+            // set up the initial state
+            const model = new TableModel(3, 3);
+            const view = new TableView(model);
+            view.init();
+            // inspect the intial state
+            let trs = document.querySelectorAll('TBODY TR');
+            let tdfoot = document.querySelectorAll('TFOOT TD');
+            expect(tdfoot[0].textContent).toBe('');
+
+            // simulate user action
+            document.querySelector('#formula-bar').value = '6';
+            view.handleFormulaBarChange();
+            view.currentCellLocation = {col: 0, row: 1};
+            document.querySelector('#formula-bar').value = '5';
+            view.handleFormulaBarChange();
+            // tds = trs[0].cells[1];
+            // tds.click();
+            // document.querySelector('#formula-bar').value = '6';
+            // view.handleFormulaBarChange();
+
+
+            // inspect the resulting state
+            tdfoot = document.querySelectorAll('TFOOT TD');
+            expect(tdfoot[0].textContent).toBe('11');
+
+        });
+    });
+
     describe('formula bar', () => {
 
         it('makes change TO the value of the current cell', () => {
