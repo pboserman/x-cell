@@ -8,6 +8,7 @@ tableView.init();
 
 
 },{"./table-model":5,"./table-view":6}],2:[function(require,module,exports){
+
 const getRange = function(fromNum, toNum) {
     return Array.from({ length: toNum - fromNum + 1}, 
         (unused, i) => i + fromNum);
