@@ -1,44 +1,44 @@
 const { removeChildren,
-        createTH,
-        createTR,
-        createTD } = require('../dom-util');
+  createTH,
+  createTR,
+  createTD } = require('../dom-util');
 
-describe('dom-util', () => {
+  describe('dom-util', () => {
 
     describe('DOM creation functions', () => {
-        describe('CreateTH', () => {
-            it('produces a valid TH element', () => {
-                const el = createTH();
-                expect(el.tagName).toBe('TH');
-            });
-
-            it('sets the text of the TH', () => {
-                const text = "Oh that\'s just great! Well, game over, man!";
-                const el = createTH(text);
-                expect(el.textContent).toBe(text);
-            });
-
+      describe('CreateTH', () => {
+        it('produces a valid TH element', () => {
+          const el = createTH();
+          expect(el.tagName).toBe('TH');
         });
 
-        describe('CreateTD', () => {
-            it('produces a valid TD element', () => {
-                const el = createTD();
-                expect(el.tagName).toBe('TD');
-            });
+        it('sets the text of the TH', () => {
+          const text = "Oh that\'s just great! Well, game over, man!";
+          const el = createTH(text);
+          expect(el.textContent).toBe(text);
         });
 
-        describe('CreateTR', () => {
-            it('produces a valid TR element', () => {
-                const el = createTR();
-                expect(el.tagName).toBe('TR');
-            });
+      });
+
+      describe('CreateTD', () => {
+        it('produces a valid TD element', () => {
+          const el = createTD();
+          expect(el.tagName).toBe('TD');
         });
+      });
+
+      describe('CreateTR', () => {
+        it('produces a valid TR element', () => {
+          const el = createTR();
+          expect(el.tagName).toBe('TR');
+        });
+      });
     })
 
 
     describe("removeChildren()", () => {
 
-        it('removes one child', () => {
+      it('removes one child', () => {
             //set up initial state
             const parent = document.createElement("DIV");
             const child = document.createElement("STRONG");
@@ -53,7 +53,7 @@ describe('dom-util', () => {
 
             //inspecting resulting state
             expect(parent.childNodes.length).toBe(0);
-        });
+          });
     });
 
-});
+  });
